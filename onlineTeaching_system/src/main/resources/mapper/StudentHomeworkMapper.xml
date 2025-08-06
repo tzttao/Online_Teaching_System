@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.StudentHomeworkMapper">
+    <resultMap id="BaseResultMap" type="com.model.StudentHomework">
+        <constructor>
+            <idArg column="sh_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="s_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="t_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="h_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="sh_doc" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="sh_score" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.model.StudentHomework">
+        <id column="sh_id" property="shId" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result column="s_id" property="sId" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result column="t_id" property="tId" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result column="h_id" property="hId" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="shDoc" column="sh_doc" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="shScore" column="sh_score" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+        <result column="s_name" property="sName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="t_name" property="tName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="h_name" property="hName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="h_info" property="hInfo" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="h_time" property="hTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+    <select id="selectMyHomeworkByHidAndSId" resultMap="BaseResultMap1" parameterType="java.lang.Integer">
+       SELECT
+        student_homework.sh_id,
+        student_homework.s_id,
+        student_homework.t_id,
+        student_homework.h_id,
+        student_homework.sh_doc,
+        student_homework.sh_score,
+        homework.h_name,
+        homework.h_info,
+        homework.h_time
+        FROM
+        student_homework
+        INNER JOIN homework ON student_homework.h_id = homework.h_id
+        where s_id = #{sId,jdbcType=INTEGER} and homework.h_id=#{hId}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        from student_homework
+        where sh_id = #{shId,jdbcType=INTEGER}
+    </select>
+    <select id="selectSHomeworkByHid" resultMap="BaseResultMap1" parameterType="java.lang.Integer">
+        SELECT
+        student.s_name,
+        teacher.t_name,
+        student_homework.sh_doc,
+        student_homework.sh_score,
+        student_homework.sh_id,
+        student_homework.h_id,
+        student_homework.s_id
+        FROM
+        student_homework
+        INNER JOIN student ON student_homework.s_id = student.s_id
+        INNER JOIN teacher ON student_homework.t_id = teacher.t_id
+        where h_id = #{hId,jdbcType=INTEGER}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student_homework
+    where sh_id = #{shId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.model.StudentHomework" useGeneratedKeys="true" keyProperty="shId">
+    insert into student_homework (s_id, t_id, h_id, 
+      sh_doc, sh_score)
+    values (#{sId,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER}, #{hId,jdbcType=INTEGER}, 
+      #{shDoc,jdbcType=VARCHAR}, #{shScore,jdbcType=DOUBLE})
+  </insert>
+    <insert id="addHomework" parameterType="com.model.StudentHomework" useGeneratedKeys="true" keyProperty="shId">
+        insert into student_homework
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sId != null">
+                s_id,
+            </if>
+            <if test="tId != null">
+                t_id,
+            </if>
+            <if test="hId != null">
+                h_id,
+            </if>
+            <if test="shDoc != null">
+                sh_doc,
+            </if>
+            <if test="shScore != null">
+                sh_score,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sId != null">
+                #{sId,jdbcType=INTEGER},
+            </if>
+            <if test="tId != null">
+                #{tId,jdbcType=INTEGER},
+            </if>
+            <if test="hId != null">
+                #{hId,jdbcType=INTEGER},
+            </if>
+            <if test="shDoc != null">
+                #{shDoc,jdbcType=VARCHAR},
+            </if>
+            <if test="shScore != null">
+                #{shScore,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBySHid" parameterType="com.model.StudentHomework">
+        update student_homework
+        <set>
+            <if test="sId != null">
+                s_id = #{sId,jdbcType=INTEGER},
+            </if>
+            <if test="tId != null">
+                t_id = #{tId,jdbcType=INTEGER},
+            </if>
+            <if test="hId != null">
+                h_id = #{hId,jdbcType=INTEGER},
+            </if>
+            <if test="shDoc != null">
+                sh_doc = #{shDoc,jdbcType=VARCHAR},
+            </if>
+            <if test="shScore != null">
+                sh_score = #{shScore,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where sh_id = #{shId,jdbcType=INTEGER}
+    </update>
+</mapper>

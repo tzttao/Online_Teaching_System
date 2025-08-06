@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.HomeworkMapper">
+    <resultMap id="BaseResultMap" type="com.model.Homework">
+        <constructor>
+            <idArg column="h_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="t_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="cr_Id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="h_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="h_info" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="h_doc" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="h_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.model.Homework">
+        <constructor>
+            <idArg column="h_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="t_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="cr_Id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="h_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="h_info" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="h_doc" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="h_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="sh_doc" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+<!--    <select id="selectStudentHomeworkBySidAndCRid" resultMap="BaseResultMap1">-->
+<!--       SELECT-->
+<!--        student_homework.sh_doc,-->
+<!--        homework.h_id,-->
+<!--        homework.cr_id,-->
+<!--        homework.h_name,-->
+<!--        homework.h_info,-->
+<!--        homework.h_doc,-->
+<!--        homework.h_time,-->
+<!--        homework.t_id-->
+<!--        FROM-->
+<!--        homework-->
+<!--        INNER JOIN student_homework ON student_homework.h_id = homework.h_id-->
+<!--        where s_id= #{sId,jdbcType=INTEGER} and cr_id= #{crId,jdbcType=INTEGER}-->
+<!--    </select>-->
+    <select id="selectHomeworkByHid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
+    from homework
+    where h_id = #{hId,jdbcType=INTEGER}
+  </select>
+    <select id="selectCourseByCRidAndTid" resultMap="BaseResultMap">
+    select *
+    from homework
+    where cr_id = #{crId} and t_id=#{tId}
+  </select>
+    <select id="selectCourseByCRid" resultMap="BaseResultMap">
+    select *
+    from homework
+    where cr_id = #{crId}
+  </select>
+    <delete id="deleteHomeworkByHid" parameterType="java.lang.Integer">
+    delete from homework
+    where h_id = #{hId,jdbcType=INTEGER}
+  </delete>
+    <insert id="addHomework" parameterType="com.model.Homework" useGeneratedKeys="true" keyProperty="hId">
+        insert into homework
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tId != null">
+                t_id,
+            </if>
+            <if test="crId != null">
+                cr_Id,
+            </if>
+            <if test="hName != null">
+                h_name,
+            </if>
+            <if test="hInfo != null">
+                h_info,
+            </if>
+            <if test="hDoc != null">
+                h_doc,
+            </if>
+            <if test="hTime != null">
+                h_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tId != null">
+                #{tId,jdbcType=INTEGER},
+            </if>
+            <if test="crId != null">
+                #{crId,jdbcType=INTEGER},
+            </if>
+            <if test="hName != null">
+                #{hName,jdbcType=VARCHAR},
+            </if>
+            <if test="hInfo != null">
+                #{hInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="hDoc != null">
+                #{hDoc,jdbcType=VARCHAR},
+            </if>
+            <if test="hTime != null">
+                #{hTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateHomeworkByHid" parameterType="com.model.Homework">
+        update homework
+        <set>
+            <if test="tId != null">
+                t_id = #{tId,jdbcType=INTEGER},
+            </if>
+            <if test="crId != null">
+                cr_Id = #{crId,jdbcType=INTEGER},
+            </if>
+            <if test="hName != null">
+                h_name = #{hName,jdbcType=VARCHAR},
+            </if>
+            <if test="hInfo != null">
+                h_info = #{hInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="hDoc != null">
+                h_doc = #{hDoc,jdbcType=VARCHAR},
+            </if>
+            <if test="hTime != null">
+                h_time = #{hTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where h_id = #{hId,jdbcType=INTEGER}
+    </update>
+</mapper>

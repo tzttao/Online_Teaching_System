@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.CourseWareMapper" >
+  <resultMap id="BaseResultMap" type="com.model.CourseWare" >
+    <constructor >
+      <idArg column="cw_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="cr_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="cw_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cw_info" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cw_doc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cw_downloadtimes" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <select id="selectCourseWareByCWid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from course_ware
+    where cw_id = #{cwId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCourseWareByCRid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from course_ware
+    where cr_id = #{crId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCourseWareByCWdoc" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from course_ware
+    where cw_doc = #{cwDoc,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteCourseWareByCWid" parameterType="java.lang.Integer" >
+    delete from course_ware
+    where cw_id = #{cwId,jdbcType=INTEGER}
+  </delete>
+  <insert id="addCourseWare" parameterType="com.model.CourseWare" useGeneratedKeys="true" keyProperty="cwId" >
+    insert into course_ware
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="crId != null" >
+        cr_id,
+      </if>
+      <if test="cwName != null" >
+        cw_name,
+      </if>
+      <if test="cwInfo != null" >
+        cw_info,
+      </if>
+      <if test="cwDoc != null" >
+        cw_doc,
+      </if>
+      <if test="cwDownloadtimes != null" >
+        cw_downloadtimes,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="crId != null" >
+        #{crId,jdbcType=INTEGER},
+      </if>
+      <if test="cwName != null" >
+        #{cwName,jdbcType=VARCHAR},
+      </if>
+      <if test="cwInfo != null" >
+        #{cwInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="cwDoc != null" >
+        #{cwDoc,jdbcType=VARCHAR},
+      </if>
+      <if test="cwDownloadtimes != null" >
+        #{cwDownloadtimes,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCourseWareByCWid" parameterType="com.model.CourseWare" >
+    update course_ware
+    <set >
+      <if test="crId != null" >
+        cr_id=#{crId,jdbcType=INTEGER},
+      </if>
+      <if test="cwName != null" >
+        cw_name = #{cwName,jdbcType=VARCHAR},
+      </if>
+      <if test="cwInfo != null" >
+        cw_info = #{cwInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="cwDoc != null" >
+        cw_doc = #{cwDoc,jdbcType=VARCHAR},
+      </if>
+      <if test="cwDownloadtimes != null" >
+        cw_downloadtimes = #{cwDownloadtimes,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cw_id = #{cwId,jdbcType=INTEGER}
+  </update>
+</mapper>

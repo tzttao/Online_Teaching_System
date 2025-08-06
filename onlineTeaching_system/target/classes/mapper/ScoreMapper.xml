@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.ScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.model.Score" >
+    <constructor >
+      <idArg column="sc_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="c_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="s_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="daily_score" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="final_exam" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="final_score" jdbcType="DOUBLE" javaType="java.lang.Double" />
+    </constructor>
+  </resultMap>
+
+  <select id="selectScoreBySCid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from score
+    where sc_id = #{scId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteScoreBySCid" parameterType="java.lang.Integer" >
+    delete from score
+    where sc_id = #{scId,jdbcType=INTEGER}
+  </delete>
+  <insert id="addScore" parameterType="com.model.Score" useGeneratedKeys="true" keyProperty="scId" >
+    insert into score
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="sId != null" >
+        s_id,
+      </if>
+      <if test="dailyScore != null" >
+        daily_score,
+      </if>
+      <if test="finalExam != null" >
+        final_exam,
+      </if>
+      <if test="finalScore != null" >
+        final_score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null" >
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="dailyScore != null" >
+        #{dailyScore,jdbcType=DOUBLE},
+      </if>
+      <if test="finalExam != null" >
+        #{finalExam,jdbcType=DOUBLE},
+      </if>
+      <if test="finalScore != null" >
+        #{finalScore,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateScoreBySCid" parameterType="com.model.Score" >
+    update score
+    <set >
+      <if test="cId != null" >
+        c_id = #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="sId != null" >
+        s_id = #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="dailyScore != null" >
+        daily_score = #{dailyScore,jdbcType=DOUBLE},
+      </if>
+      <if test="finalExam != null" >
+        final_exam = #{finalExam,jdbcType=DOUBLE},
+      </if>
+      <if test="finalScore != null" >
+        final_score = #{finalScore,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where sc_id = #{scId,jdbcType=INTEGER}
+  </update>
+</mapper>

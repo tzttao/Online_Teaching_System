@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.StudentMapper">
+    <resultMap id="BaseResultMap" type="com.model.Student">
+        <constructor>
+            <idArg column="s_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="d_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="s_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="s_age" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="s_sex" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="s_username" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="s_password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="s_major" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="s_class" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <select id="studentLogin" resultMap="BaseResultMap" parameterType="com.model.Student">
+    select * from student
+    where s_username = #{sUsername} and s_password=#{sPassword}
+  </select>
+    <select id="selectStudentByUsername" resultMap="BaseResultMap">
+    select  * from student
+    where s_username = #{sUsername,jdbcType=VARCHAR}
+  </select>
+    <!--通过学生id查询学生信息-->
+    <select id="selectStudentBySid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select * from student
+        where s_id = #{sId,jdbcType=INTEGER}
+    </select>
+    <!--  通过学生id删除学生信息-->
+    <delete id="deleteStudentBySid" parameterType="java.lang.Integer">
+    delete from student
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+    <!--  添加学生-->
+    <insert id="addStudent" parameterType="com.model.Student" useGeneratedKeys="true" keyProperty="sId">
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dId != null">
+                d_id,
+            </if>
+            <if test="sName != null">
+                s_name,
+            </if>
+            <if test="sSex != null">
+                s_sex,
+            </if>
+            <if test="sAge != null">
+                s_age,
+            </if>
+            <if test="sUsername != null">
+                s_username,
+            </if>
+            <if test="sPassword != null">
+                s_password,
+            </if>
+            <if test="sMajor != null">
+                s_major,
+            </if>
+            <if test="sClass != null">
+                s_class,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dId != null">
+                #{dId,jdbcType=INTEGER},
+            </if>
+            <if test="sName != null">
+                #{sName,jdbcType=VARCHAR},
+            </if>
+            <if test="sSex != null">
+                #{sSex,jdbcType=VARCHAR},
+            </if>
+            <if test="sAge != null">
+                #{sAge,jdbcType=INTEGER},
+            </if>
+            <if test="sUsername != null">
+                #{sUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="sPassword != null">
+                #{sPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="sMajor != null">
+                #{sMajor,jdbcType=VARCHAR},
+            </if>
+            <if test="sClass != null">
+                #{sClass,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <!--  修改学生信息-->
+    <update id="updateStudentBySid" parameterType="com.model.Student">
+        update student
+        <set>
+            <if test="dId != null">
+                d_id = #{dId,jdbcType=INTEGER},
+            </if>
+            <if test="sName != null">
+                s_name = #{sName,jdbcType=VARCHAR},
+            </if>
+            <if test="sSex != null">
+                s_sex = #{sSex,jdbcType=VARCHAR},
+            </if>
+            <if test="sAge != null">
+                s_age= #{sAge,jdbcType=INTEGER},
+            </if>
+            <if test="sUsername != null">
+                s_username = #{sUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="sPassword != null">
+                s_password = #{sPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="sMajor != null">
+                s_major = #{sMajor,jdbcType=VARCHAR},
+            </if>
+            <if test="sClass != null">
+                s_class = #{sClass,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where s_id = #{sId,jdbcType=INTEGER}
+    </update>
+</mapper>

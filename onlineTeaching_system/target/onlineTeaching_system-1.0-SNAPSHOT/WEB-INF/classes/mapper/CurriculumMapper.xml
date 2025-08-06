@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.CurriculumMapper" >
+  <resultMap id="BaseResultMap" type="com.model.Curriculum" >
+    <constructor >
+      <idArg column="cr_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="c_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="cr_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+  <select id="selectCurriculumByCRid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from curriculum
+    where cr_id = #{crId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCurriculumByCid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from curriculum
+    where c_id = #{cId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteCurriculumByCRid" parameterType="java.lang.Integer" >
+    delete from curriculum
+    where cr_id = #{crId,jdbcType=INTEGER}
+  </delete>
+  <insert id="addCurriculum" parameterType="com.model.Curriculum" useGeneratedKeys="true" keyProperty="crId" >
+    insert into curriculum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        c_id,
+      </if>
+      <if test="crName != null" >
+        cr_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cId != null" >
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="crName != null" >
+        #{crName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCurriculumByCRid" parameterType="com.model.Curriculum" >
+    update curriculum
+    <set >
+      <if test="cId != null" >
+        c_id = #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="crName != null" >
+        cr_name = #{crName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cr_id = #{crId,jdbcType=INTEGER}
+  </update>
+</mapper>

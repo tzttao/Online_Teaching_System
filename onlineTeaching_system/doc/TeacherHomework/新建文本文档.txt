@@ -1,0 +1,72 @@
+<template>
+  <div>
+    <table class="el-table el-table--fit el-table--border table-detail">
+      <thead>
+        <tr>
+          <th>课程编号</th>
+          <th>课程名称</th>
+          <th>课程信息</th>
+          <th>课程剩余容量</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="c in msg">
+          <td ><el-link type="primary" v-text="c.cId" href="https://element.eleme.io">主要链接</el-link></td>
+          <td v-text="c.cName"></td>
+          <td v-text="c.cInfo"></td>
+          <td v-text="c.cCapacity"></td>
+          <td>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      username: '',
+      tId: '',
+      isCollapse: false,
+      msg: null
+    }
+  },
+  methods: {
+    detail (index, row) {
+      console.log(index, row);
+    }
+  },
+  mounted: function () {
+    let user = sessionStorage.getItem('user');
+    let tId = sessionStorage.getItem('tId');
+    if (user) {
+      this.username = user;
+      this.tId = tId;
+    }
+    let that = this;
+    let params = { tId: this.tId }
+    this.$axios.post("/api/selectCourseByTid", this.$qs.stringify(params))
+      .then(function (res) {
+        if (res.data == '') {
+          that.$message({
+            title: '系统提示',
+            message: '您当前没有授课课程！',
+            showClose: true,
+            center: true,
+            type: 'success'
+          })        }
+        that.msg = res.data;
+      }).catch(function (error) {
+        console.log(error);
+      });
+  },
+}
+</script>
+<style>
+.el-table {
+  width: 90%;
+  margin: 0 auto;
+}
+</style>

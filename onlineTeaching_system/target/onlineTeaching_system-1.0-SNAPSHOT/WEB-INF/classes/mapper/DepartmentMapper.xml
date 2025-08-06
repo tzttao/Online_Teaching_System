@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.model.Department" >
+    <constructor >
+      <idArg column="d_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="d_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <select id="selectDepartment" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from department
+  </select>
+  <delete id="deleteDepartmentByDid" parameterType="java.lang.Integer" >
+    delete from department
+    where d_id = #{dId,jdbcType=INTEGER}
+  </delete>
+  <insert id="addDepartment" parameterType="com.model.Department" useGeneratedKeys="true" keyProperty="dId" >
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dName != null" >
+        d_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dName != null" >
+        #{dName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDepartmentByDid" parameterType="com.model.Department" >
+    update department
+    <set >
+      <if test="dName != null" >
+        d_name = #{dName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where d_id = #{dId,jdbcType=INTEGER}
+  </update>
+</mapper>
